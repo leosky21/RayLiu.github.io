@@ -1,0 +1,15 @@
+使用MyBatis框架作为dao层的支持
+1. 导入mybatis相关的jar包
+mybatis-3.2.8.jar
+mybatis-spring-1.2.3.jar
+
+2. 在applicationContext.xml添加配置
+SqlSessionFactoryBean组件
+MapperScannerConfigurer
+
+3. 添加CostMapper.xml文件 和 添加MyBatis注解
+
+4. 开启使用CostMapper映射器，取消使用JdbcCostDao
+现在有两个CostDao接口的实现类：
+- JdbcCostDao.java，注释掉类前面的@Repository
+- MyBatis使用代理方式实现的MapperProxy类

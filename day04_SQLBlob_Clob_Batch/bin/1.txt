@@ -1,0 +1,12 @@
+1. 基本概念
+	大数据也称之为LOB(Large Objects)，LOB又分为：
+	
+  - clob 
+	clob用于存储大文本。
+  -	blob 
+	blob用于存储二进制数据，例如图像、声音、二进制文件等。
+	在实际开发中，有时是需要用程序把大文本或二进制数据直接保存到数据库中进行储存的。 
+		对MySQL而言只有blob，而没有clob，MySQL存储大文本采用的是Text，Text和blob分别又分为：
+
+		TINYTEXT、TEXT、MEDIUMTEXT和LONGTEXT
+		TINYBLOB、BLOB、MEDIUMBLOB和LONGBLOB

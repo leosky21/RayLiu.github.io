@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- DeptMapper接口映射器 对应的mapper配置文件，
+	有严格的要求：
+	（1）namespace属性值：填写映射器接口的完整类型名
+	（2）<select><insert>等标签的id，
+			必须和接口中方法名对应
+	符合以上两个要求，便于最终实现类的绑定！-->
+<!-- 将当前<mapper>映射器 和 接口DeptMapper 绑定 -->
+<mapper namespace="cn.tedu.dao.CostDao">
+
+	<!-- 
+	resultType：自动映射封装到对象中
+	resultMap：根据预置的映射关系，来封装到对象
+	 -->
+	<select id="findAll" resultMap="cost_map">
+		select * from cost
+	</select>
+	
+	<!-- type：用于封装数据记录的对象类型
+		id：resultMap的访问名			 -->
+	<resultMap id="cost_map"
+			type="cn.tedu.entity.Cost">
+		<!-- 声明所有 字段名 和 属性名不一致信息 -->
+		<result property="costId" column="cost_id"/>
+		<result property="baseDuration" column="base_duration"/>
+		<result property="baseCost" column="base_cost"/>
+		<result property="unitCost" column="unit_cost"/>
+		<result property="costType" column="cost_type"/>
+	</resultMap>
+	
+</mapper>
+
+
+
+
+

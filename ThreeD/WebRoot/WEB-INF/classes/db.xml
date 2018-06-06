@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Element>
+	<module id="1">
+
+	<humidity>12</humidity>
+
+	<person>1</person>
+
+	<temperature>21</temperature>
+	<lat>129</lat>
+	<lon>22</lon>
+</module>
+
+</Element>

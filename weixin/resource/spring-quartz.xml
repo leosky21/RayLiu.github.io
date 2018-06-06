@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+ 	<!--采集任务-->
+    <bean id="collectTask" class="com.weibo.jg.wb.CollectQuartzTask"/>
+    <!-- 调度任务 -->
+    <bean id="collectJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="collectTask"/>
+        <property name="targetMethod" value="run"/>
+         <!-- 如果前一个任务还没有结束第二个任务不会启动 false -->  
+        <property name="concurrent" value="false" />  
+    </bean>
+    <!-- 定时触发器 -->
+    <bean id="collectTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="collectJobDetail"/>
+        <property name="cronExpression" value="0 0/30 * * * ?"/>
+    </bean>
+ 		<!-- quartz实例化5秒后执行一次job -->
+     <bean id="taskJobTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="collectJobDetail" />
+        <property name="startDelay" value="5000" /> <!-- 启动延迟  单位/毫秒-->
+        <property name="repeatInterval" value="1000" /> <!-- 多久执行一次 单位/毫秒-->
+        <property name="repeatCount" value="0" />  <!--  重复次数  -->
+    </bean>
+
+    <!-- 调度工厂 -->
+    <bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="collectTrigger"/>
+                <ref bean="taskJobTrigger"/>
+            </list>
+        </property>
+    </bean> 
+	
+
+</beans>

@@ -1,0 +1,25 @@
+电信计费系统NETCTOSS
+1. 使用的技术
+使用SpringCore核心技术及SpringWebMVC技术
+
+2. 类之间的依赖关系
+- 客户端请求，依赖于前端控制器DispatcherServlet
+	- web.xml, *.do
+- DispatcherServlet会将请求转交给LoginController处理
+	- 使用@Controller注解将LoginController纳入管理
+	- RequestMappingHandlerMapping
+	- 请求中参数自动封装（简单参数获取；封装到Bean）
+- LoginController控制器传递参数给LoginService进行处理
+	- 使用@Service注解，将LoginServiceImpl纳入管理
+	- 使用@Autowired注解，将Service实现类注入
+- LoginService调用AdminDao进行数据库的操作
+	- 使用@Repository注解，将AdminDaoImpl纳入管理
+	- 使用@Autowired注解，将AdminDao实现类注入
+- AdminDAo依赖于DataSource数据源连接池
+	- 使用<bean>标签，将BasicDataSource纳入管理
+	- 使用@Autowired注解，将DataSource实现类注入
+	
+	
+	
+
+	

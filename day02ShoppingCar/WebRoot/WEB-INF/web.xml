@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <servlet>
+    <servlet-name>BuyServlet</servlet-name>
+    <servlet-class>cn.itcast.controller.BuyServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ListCartUIServlet</servlet-name>
+    <servlet-class>cn.itcast.web.UI.ListCartUIServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DeleteItemServlet</servlet-name>
+    <servlet-class>cn.itcast.controller.DeleteItemServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ClearCartServlet</servlet-name>
+    <servlet-class>cn.itcast.controller.ClearCartServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ChangeQuantityServlet</servlet-name>
+    <servlet-class>cn.itcast.controller.ChangeQuantityServlet</servlet-class>
+  </servlet>
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>BuyServlet</servlet-name>
+    <url-pattern>/servlet/BuyServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ListCartUIServlet</servlet-name>
+    <url-pattern>/servlet/ListCartUIServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeleteItemServlet</servlet-name>
+    <url-pattern>/servlet/DeleteItemServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ClearCartServlet</servlet-name>
+    <url-pattern>/servlet/ClearCartServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ChangeQuantityServlet</servlet-name>
+    <url-pattern>/servlet/ChangeQuantityServlet</url-pattern>
+  </servlet-mapping>
+
+</web-app>
