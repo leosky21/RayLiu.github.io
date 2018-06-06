@@ -1,0 +1,9 @@
+#ff{
+	width: 350px;
+	font-size: 14px;
+}
+#ff label{
+	width: 100px;
+	display: inline-block;
+	text-align: right;
+}

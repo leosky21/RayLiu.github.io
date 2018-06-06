@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Struts2Diagram version="2.0">
+  <package name="SysUser" location="10,10" size="280,140">
+    <action name="mylogin" location="66,48" size="150,62">
+      <result name="success">
+        <resourceEdge source="success" routing="0" target="welocom.jsp" />
+      </result>
+      <result name="reLogin">
+        <resourceEdge source="reLogin" routing="0" target="login.jsp" />
+      </result>
+    </action>
+  </package>
+  <webResource name="welocom.jsp" path="welocom.jsp" location="347,34" size="150,55" />
+  <webResource name="login.jsp" path="login.jsp" location="334,99" size="150,55" />
+</Struts2Diagram>
+

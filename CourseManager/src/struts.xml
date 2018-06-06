@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<!-- 编码格式 -->
+	<constant name="struts.i18n.encoding" value="utf-8"/>
+<!-- 开发模式+热加载 -->
+	<constant name="struts.devmMode" value="true"/>
+	<constant name="struts.convention.classes.reload" value="true"/>
+	
+	<package name="SysUser" extends="struts-default" namespace="/">
+			<interceptors>
+				<interceptor name="checkInteceptor" class="com.ray.interceptor.CheckLoginInterceptor">
+				</interceptor>
+				<interceptor-stack name="checkStack">
+						<interceptor-ref  name="checkInteceptor" >	
+						</interceptor-ref>
+							
+						<interceptor-ref name="defaultStack">
+						</interceptor-ref>  
+				</interceptor-stack>			
+			</interceptors>
+	
+		<action name="mylogin"  class="com.ray.action.LoginAction" >
+			<result name="success">/manaCourse.jsp</result>
+			<result name="reLogin">/login.jsp</result>
+			
+		</action>
+		<!-- </package>
+		<package name="Reg" extends="struts-default" namespace="/"> -->
+		<action name="myregister" class="com.ray.action.RegisterAction">
+		<!-- <result name="registerSuccess">/login.jsp</result> -->
+		<!-- <result name="reRegister">/register.jsp</result> -->
+		</action>
+		
+		<action name="mymana" class="com.ray.action.ManaCourseAction">
+		</action>
+		<action name="myclass" class="com.ray.action.ClassAction">
+		</action>
+		<action name="mycourse" class="com.ray.action.CourseAction">
+		</action>
+		<action name="myclasscourse" class="com.ray.action.ClassCourseAction">
+		</action>
+		<action name="myteacher" class="com.ray.action.TeacherAction"></action>
+		
+		
+	</package>
+</struts>    

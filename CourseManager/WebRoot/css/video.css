@@ -1,0 +1,116 @@
+*{
+	margin: 0;
+	padding: 0;
+	word-break: break-all;/*word-break: break-all;任意位置换行*/
+	}
+h1,h2,h3,h4,h5,h6{
+	font-size: 1em;
+}
+a{ 
+	color: #2B93D2;
+	text-decoration: none;
+	}
+ul,li{
+	list-style: none;
+}
+fieldset,img{
+	border: none;
+}
+/* 重置的式样*/
+
+.v_show{
+	width: 595px;
+	margin: 20px 0 1px 60px;
+}/*顶级容器*/
+.v_caption{
+	height: 35px;
+	overflow: hidden;
+	background: #AFD9EE;
+	border-radius: 5px 5px 0 0;
+}
+.v_caption h2{
+	float: left;
+	width: 84px;
+	height: 35px;
+	overflow: hidden;
+	margin: 10px 0 5px 7px;
+	padding-left: 10px;
+	font-size: 18px;
+}
+.hightlight_tip{
+	display: inline;
+	float: left;
+	margin: 14px 0 0 10px;
+}
+.hightlight_tip span{
+	text-indent: -9999px;
+	float: left;
+	margin: 0 2px;
+	display: inline;
+	width: 7px;
+	height: 7px;
+	background: #FFFFFF;
+	border-radius: 50%;
+}
+.hightlight_tip .current{
+	background: #888888;
+}
+.more{
+	float: right;
+	width: 60px;
+	height: 84px;
+	text-align: center;
+	padding: 10px 10px 20px ;
+}
+.v_content{
+	position: relative;
+	width: 595px;
+	height: 160px;
+	overflow: hidden;
+	border: 1px solid #E7E7E7;
+	border-top: none;
+}
+.v_content_list{
+	position: absolute;
+	width: 2500px;
+	top: 0;
+	left: 0;
+}
+.v_content ul{
+	float: left;
+}
+.v_content ul li{
+	display: inline;
+	float: left;
+	margin: 10px 2px 0;
+	padding: 8px;
+}
+.v_content ul li a{
+	display: block;
+	width: 128px;
+	height: 80px;
+	overflow: hidden;
+}
+.v_content ul li img{
+	width: 128px;
+	height: 80px;
+}
+.v_content ul li h4{
+	width: 128px;
+	height: 80px;
+	overflow: hidden;
+	margin-top: 12px;
+	font-weight: normal;
+}
+.v_content ul li h4 a{
+	display: inline;
+	height: auto;
+}
+.v_content ul li span{
+	color: #666;
+}
+.v_content ul li em{
+	color: #888888;
+	font-family: verdana;
+	font-size: 0.9em;
+}

@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教务系统</title>
+		<style type="text/css">
+			*{margin: 0px;padding: 0px;}
+			body{background: #fff;}
+			#box-wrap{width: 600px;height: 400px;margin: 10px auto;border-radius: 5px 5px 0px 0px;}
+			#top-wrap ul{
+				height: 50px;width:list-style-type: none;background-color: #31B2C3;border: 2px solid #fafafa;border-radius: 5px 5px 0 0;
+			}
+			#top-wrap ul li{width:70px;float:left;font-family: "微软雅黑";font-size: 20px;color: #AAAAAA;margin-left: 20px;
+			text-align: center;line-height: 50px;padding-left:20px ;list-style-type: none;background-color: #31B2C3;}
+			#top-wrap ul li a{width:70px;display:block;height:50px;text-decoration: none;line-height: 50px;}
+			#top-wrap ul li a:hover{width:70px;height:50px;color:red;text-decoration:underline;background: #FAFAFA;}
+			#top-wrap ul li a:visited{background: #00BFFF;}
+			
+			.active{background-color: #fafafa;}
+			.show{display:block;}
+			.hide{display:none;}
+		</style>
+		
+	</head>
+	<body>
+		<div id="box-wrap">
+			<div id="top-wrap">
+				<ul id="ul1">
+					<li><a href="/test/teacher.html" onmouseover="tab()">教师信息</a></li>
+					<li><a href="class.html" onmouseover="tab()">班级信息</a></li>
+					<li><a href="../test/course.html" onmouseover="tab()">教务信息</a></li>
+					<li><a href="../test/user.html" onmouseover="tab()">个人信息</a></li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
