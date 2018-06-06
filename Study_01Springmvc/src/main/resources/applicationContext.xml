@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+
+	<!-- 当使用 <context:component-scan/> 后，就可以将 <context:annotation-config/>  -->
+	<context:component-scan base-package="cn.ray" />
+	
+	<!-- 从Spring3.1版本开始，废除了DefaultAnnotationHandlerMapping的使用 -->
+	<!-- 配置注解式处理器映射器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+	<!-- 配置注解式处理器适配器 --><!-- @RequestMapping注解的描述：定义请求url到处理器功能方法的映射 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+
+	<!-- 配置一个注解驱动,如果配置该标签,取代以上HandlerMapping和handlerAdapter的处理 -->
+	<!-- 配置一个注解驱动，如果配置此标签，那么就可以不用配置处理器映射器和处理器适配器 -->
+	<!-- <mvc:annotation-driven conversion-service="conversionService" /> -->
+	<mvc:annotation-driven  />
+	<!-- 支持的注解:
+			@Resource
+			@Autowired
+			@Qualifier
+			@PostContruct 初始化方法的注解
+			@PreDestroy 销毁方法的注解
+		并提供了：数据绑定支持，
+			@NumberFormatannotation支持，
+			@DateTimeFormat支持，
+			@Valid支持，
+			读写XML的支持（JAXB），
+			读写JSON的支持（Jackson）。
+		
+		json(需要Jackson core,annotation,databind 三个jar包)
+	 -->
+	
+	
+	<!-- 转换器的配置 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="cn.ray.converter.DateConvert" />
+			</set>
+		</property>
+	</bean>
+
+
+	
+	
+	<!-- 配置视图解析器 -->
+	<!--InternalResourceViewResolver：支持JSP视图解析。 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- viewClass：JstlView表示JSP模板页面需要使用JSTL标签库，所以classpath中必须包含jstl的相关jar 
+			包。此属性可以不设置，默认为JstlView。 -->
+		<!-- <property name="viewClass" ></property> -->
+		<!-- prefix和suffix：查找视图页面的前缀和后缀， -->
+		<property name="prefix" value="/WEB-INF/"></property>
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<mvc:interceptors>
+			
+	  <mvc:interceptor>  		
+	    <mvc:mapping path="/login/*" />
+	    <mvc:exclude-mapping path="/login/out"/>
+		<mvc:exclude-mapping path="/login/auth"/>
+	    	
+	    	<bean class="cn.ray.interceptor.LoginInterceptor"/>
+	  </mvc:interceptor>
+	  
+	</mvc:interceptors>
+
+	<!--用于将对象转换为 JSON,配置以下信息 ,或者 -->
+	<!-- <bean id="stringConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean> -->
+	<!-- <bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+ -->
+	<!-- <bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />
+			</list>
+		</property>
+	</bean> -->
+</beans>

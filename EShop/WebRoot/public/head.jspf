@@ -1,0 +1,8 @@
+ <%@ page language="java" pageEncoding="UTF-8" %>  
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+<c:set value="${pageContext.request.contextPath }"  var="shop" />
+<input type="hidden" id="shopValue" value="${pageContext.request.contextPath }">  
+
+<title>E+商城</title>    
+<!-- 后台 -->
+

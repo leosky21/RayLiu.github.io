@@ -1,0 +1,249 @@
+先建立webproj -> MavenProj -> SpringProj - web.xml配置DispatcherServlet  contextConfigLoaction=classpath:...xml
+
+一. 处理流程:
+	1. 用户请求 -> 前端控制器DispatcherServlet
+	2. DispatcherServlet -> 请求查询Handler -> HandlerMapping处理器映射器
+	3. HandlerMapping处理器映射器 -> 返回处理执行链 
+	4. 请求执行Handler -> 处理器适配器handlerAdapter 
+	5. 执行Handler  -> Handler处理器 -> 返回ModelAndView
+	6. 请求解析视图 -> 视图解析器ViewResolver -> 返回View
+	7. 渲染视图 -> jsp,freemaker
+	
+二. SpringMVC的三大组件: 
+	handerMapping
+	handlerAdapter
+	ViewResolver		
+	
+三. SpringMVC框架默认支持的参数类型
+	处理器形参中添加如下类型的参数，处理适配器会默认识别并进行赋值。
+	-	HttpServletRequest：
+			通过request对象获取请求信息。
+	-	HttpServletResponse：
+			通过response处理响应信息。
+	-	HttpSession：
+			通过session对象得到session中存放的对象。
+	-	Model/ModelMap：
+			ModelMap是Model接口的实现类，我们可通过Model或ModelMap向页面传递数据，如下：
+			Items items = itemService.getItemById(id);
+			model.addAttribute("item", items); // 类似于：modelAndView.addObject("item", items);
+如果使用Model接口则可以不使用ModelAndView对象，Model对象可以向页面传递数据(model是框架给我们传递过来的对象，所以这个对象不需要我们返回)，View对象则可以使用String返回值替代。不管是Model还是ModelAndView，其本质都是使用Request对象向jsp传递数据。
+
+	- 使用pojo接收表单数据
+		要求pojo对象中的属性名 和 表单中input的name属性一致.
+	注意: 
+		提交的表单中不要有日期类型的数据，否则会报400错误。
+			如果想提交日期类型的数据需要用到后面的自定义参数绑定的内容。
+- 接受数组
+	Controller类方法中可以用String[]接收，或者pojo的String[]属性接收。两种方式任选其一即可。
+- 接受List
+	List类型的数据必须是pojo的属性，方法的形参为List类型无法正确接收到数据	 
+四. SpringMVC框架支持的数据类型有：
+		
+		整形：Integer、int
+		字符串：String
+		单精度：Float、float
+		双精度：Double、double
+		布尔型：Boolean、boolean 
+	注意：参数类型推荐使用包装数据类型，因为基础数据类型不可以为null。
+
+五 .注解
+				```
+		- 工作原理：  
+				  当spring容器启动的时候，  
+				  ApplicationContext ctx = new FileSystemXmlApplicationContext("sss.xml");  
+				  spring容器会创建纳入spring容器管理的bean.分别为person和student;   
+				  spring容器会解析配置文件，会解析到<context:annotation-config/> 会在纳入spring的bean范围内查找属性上是否存在  
+				  注解@Resource(name="student")  
+				       * 如果存在：  
+				           * 继续解析@Resource有没有name属性  
+				               * 如果没有name属性  
+				                         就会在所属的属性上，把属性的名称解析出来。会让属性的名称和spring中的bean中的id进行匹配  
+				                                   如果匹配成功，则把spring容器中相应的对象赋值给该属性  
+				                                   如果匹配失败，则按照类型(Class)进行匹配  
+				               * 如果有name属性  
+				                         就会解析name属性的值，把这个值和spring容器中的bean的id进行匹配  
+				                       如果匹配成功，则把spring容器中的相应的对象赋值给该属性  
+				                       如果匹配失败，则直接报错  
+				           
+				       * 如果不存在：  
+				              不做任何事情  
+				                
+				xml注入属性和注解注入属性的写法的对比：  
+				    xml : 书写比较麻烦，但是效率比较高(直接在配置文件里面全有啦)  
+				    注解：书写比较简单，但是效率比较低(一遍遍的扫描)  
+				注解的写法只适合引用  
+				
+				```
+				
+	- @RequestParam
+		使用@RequestParam注解常用于处理简单类型的绑定。
+		value：参数名字，即入参的请求参数名字，如value=“item_id”表示请求的参数区中的名字为item_id的参数的值将传入。
+		required：是否必须，默认是true，表示请求中一定要有相应的参数，否则将报如下错误： 
+		defaultValue：默认值，表示如果请求中没有同名参数时的默认值。
+	`@RequestParam(value="id",defaultValue="1",required=true) Integer AliasId`
+
+	- @RequestMapping注解的使用
+		@RequestMapping("/item"）|| @RequestMapping(value={"/item" ,.... })
+		
+		-@RequestMapping("/itemEdit/{id}")
+			{×××}表示占位符，请求的URL可以是“/itemEdit/1”或“/itemEdit/2”，
+				通过在方法中使用@PathVariable获取{×××}中的×××变量
+			@RequestMapping中表示为”/viewItems/{id}”，
+				id和形参名称一致，那么@PathVariable就不用指定名称。 
+		- 窄化请求映射
+			在class上添加@RequestMapping(url)指定通用请求前缀， 限制此类下的所有方法请求url必须以请求前缀开头
+		- 请求方法限定
+			限定GET方法：@RequestMapping(method = RequestMethod.GET)。
+			限定POST方法：@RequestMapping(method = RequestMethod.POST)。 
+				如果通过get方式访问则报错：
+			GET和POST都可以：@RequestMapping(method={RequestMethod.GET,RequestMethod.POST})。 
+				
+	- @RequestBody注解
+		- @RequestBody注解用于读取http请求的内容(字符串)，通过SpringMVC提供的HttpMessageConverter接口将读到的内容转换为json、xml等格式的数据并绑定到Controller类方法的参数上。
+		```
+			type:"post"   
+			url;"${pageContext.request.contextPath}/Item/json_test.action"
+			data:"{"id":"1","name":"电冰箱","price":"1999"}"
+			contextType:"application/json;charset=utf-8"
+		@RequestMapping("/json_test")
+	- @ResponseBody
+		public Items jsonTest(@RequestBody Item item){ }
+		```
+静态资源访问:		
+	SpringMVC的<mvc:resources mapping="" location="">标签可实现对静态资源进行映射访问。如下是对js文件的访问配置：
+<!-- 静态资源解析，包括js,css,img... -->
+<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+<mvc:resources location="/img/" mapping="/img/**"></mvc:resources>
+			
+六 .SpringMVC与Struts2的不同
+SpringMVC的入口是一个servlet即前端控制器，而Struts2入口是一个filter过虑器。
+SpringMVC是基于方法开发(一个url对应一个方法)，请求参数传递到方法的形参，可以设计为单例或多例(建议单例)，Struts2是基于类开发，传递参数是通过类的属性，只能设计为多例。
+Struts2采用值栈存储请求和响应的数据，通过OGNL存取数据，SpringMVC通过参数解析器将request请求内容解析，并给方法形参赋值，将数据和视图封装成ModelAndView对象，最后又将ModelAndView中的模型数据通过request域传输到页面。jsp视图解析器默认使用jstl。
+
+七 . Controller类的方法返回值
+	- 返回ModelAndView
+		定义ModelAndView对象并返回，对象中可添加model数据、指定view。
+	
+	- 返回void
+		在Controller类方法形参上可以定义request和response，
+			使用request或response指定响应
+		- 使用request转向页面，如下：
+			`request.getRequestDispatcher("页面路径").forward(request, response);`
+		- 也可以通过response实现页面重定向：
+			`response.sendRedirect("url")`
+		- 也可以通过response指定响应结果，例如响应json数据如下：
+		
+		```	response.setCharacterEncoding("utf-8");
+			response.setContentType("application/json;charset=utf-8");
+			response.getWriter().write("json串");
+			//writer.write("{\"id\":\"123\"}");
+		```
+		
+	- 返回字符串
+		- Controller类方法返回字符串可以指定逻辑视图名，通过视图解析器解析为物理视图地址。
+			return "item/editItem";// -> ==== /WEB-INF/jsp/item/editItem.jsp
+		- Redirect重定向
+			` return "redirect:/item/itemList.action";`
+			` return "redirect:/item/itemList.action?id=xxx&name=xxx";`
+		- forward转发
+			转发并没有执行新的request和response，
+			而是和转发前的请求共用一个request和response。
+			所以转发前请求的参数在转发后仍然可以读取到。
+			` return "forward:/item/itemList.action";`
+八 .自定义异常处理器
+	- 全局异常处理器处理思路：
+		解析出异常类型。SpringMVC提供一个HandlerExceptionResolver接口，自定义全局异常处理器必须要实现这个接口
+		如果该异常类型是系统自定义的异常，直接取出异常信息，在错误页面展示。
+		如果该异常类型不是系统自定义的异常，那么应取出错误的堆栈信息，并记录下来，在错误页面展示。
+	- <!-- 配置全局异常处理器，且全局异常处理器只能有一个 -->
+	`<bean class="com.itheima.springmvc.exception.GlobalExceptionResolver"></bean>`
+	
+九 .文件上传
+	- 准备jar 
+		- commons-fileupload.jar
+		- commons-io.jar
+	- applicationcontext.xml 配置多媒体文件解析器 CommonsMultipartResolver
+		 <!-- 上传文件的设置 ，maxUploadSize=-1，表示无穷大。uploadTempDir为上传的临时目录 -->  
+		   ```<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"    
+		        p:defaultEncoding="UTF-8"    
+		        p:maxUploadSize="5400000"    
+		        p:uploadTempDir="fileUpload/temp"    
+		    ``` />    
+十 .JSON -> 客户端与SpringMVC的数据交互
+	-> 请求的是json串: 
+					 -> 需指定ContentType=application/json
+					 -> RequestBody 将json转换成java对象
+					 -> ResponseBody 将java对象转换成json输出 
+	-> 请求的是 key/value 
+					 -> ContentType=application/x-www-form-urlen
+					 -> 不需要RequestBody 将json串,转换成 java 对象
+					 -> ResponseBody 将java对象转换成json 串
+	一种是传json格式的数据过来，另一种就是在url的末尾传普通的key/value串过来，针对这两种方式，在Controller类中会有不同的解析，但是在Controller类中返回的json格式的数据都是一样的。
+	
+		上接requestBody 和 responseBody注解	
+	- json jar
+		- jackson.annotations.jar
+		- jackson.core.jar
+		- jackson.databind.jar
+		 ```
+		 <mvc:annotation-driven />
+		 ```
+		 或者
+		 ```
+		 <!-- 用于将对象转换为 JSON  -->  
+<bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">  
+    <property name="supportedMediaTypes">  
+        <list>  
+            <value>text/plain;charset=UTF-8</value>  
+        </list>  
+    </property>  
+</bean>  
+<bean id="jsonConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>  
+
+<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
+    <property name="messageConverters">  
+        <list>  
+            <ref bean="stringConverter" />  
+            <ref bean="jsonConverter" />  
+        </list>  
+    </property>  
+</bean>  
+		 ```
+		 
+十一 . 视图解析器
+	
+	- AbstractCachingViewResolver：
+			这是一个抽象类，这种视图解析器会把它曾经解析过的视图保存起来，
+			然后每次要解析视图的时候先从缓存里面找，如果找到了对应的视图就直接返回，
+			如果没有就创建一个新的视图对象，然后把它放到一个用于缓存的map中，
+			接着再把新建的视图返回。
+		使用这种视图缓存的方式可以把解析视图的性能问题降到最低
+	
+	- UrlBasedViewResolver 
+		 它继承了AbstractCachingViewResolver，主要就是提供的一种拼接URL的方式来解析视图，
+		 	它可以让我们通过prefix属性指定一个指定的前缀，
+		 		通过suffix属性指定一个指定的后缀，
+		 	然后把返回的逻辑视图名称加上指定的前缀和后缀就是指定的视图URL了。
+		 		如prefix=/WEB-INF/jsps/，suffix=.jsp，返回的视图名称viewName=test/index，则UrlBasedViewResolver解析出来的视图URL就是/WEB-INF/jsps/test/index.jsp。默认的prefix和suffix都是空串。
+		
+		URLBasedViewResolver支持返回的视图名称中包含redirect:前缀，
+			这样就可以支持URL在客户端的跳转，如当返回的视图名称是”redirect:test.do”的时候，
+		- 	URLBasedViewResolver发现返回的视图名称包含”redirect:”前缀，
+				于是把返回的视图名称前缀”redirect:”去掉，
+				取后面的test.do组成一个RedirectView，
+				RedirectView中将把请求返回的模型属性组合成查询参数的形式组合到redirect的URL后面，
+				然后调用HttpServletResponse对象的sendRedirect方法进行重定向
+		- 	同样URLBasedViewResolver还支持forword:前缀，对于视图名称中包含forword:
+				前缀的视图名称将会被封装成一个InternalResourceView对象，
+				然后在服务器端利用RequestDispatcher的forword方式跳转到指定的地址。    
+				使用UrlBasedViewResolver的时候必须指定属性viewClass，表示解析成哪种视图，
+				一般使用较多的就是InternalResourceView，利用它来展现jsp，但是当我们使用JSTL的时候我们必须使用JstlView。
+	-  internalResourceViewResolver：
+		 它是URLBasedViewResolver的子类，
+		 				所以URLBasedViewResolver支持的特性它都支持。
+		在实际应用中InternalResourceViewResolver也是使用的最广泛的一个视图解析器。
+		那么InternalResourceViewResolver有什么自己独有的特性呢？
+		单从字面意思来看，我们可以把InternalResourceViewResolver解释为内部资源视图解析器，
+		这就是InternalResourceViewResolver的一个特性。InternalResourceViewResolver会把返回的视图名称都解析为InternalResourceView对象，
+		InternalResourceView会把Controller处理器方法返回的模型属性都存放到对应的request属性中，
+					然后通过RequestDispatcher在服务器端把请求forword重定向到目标URL。

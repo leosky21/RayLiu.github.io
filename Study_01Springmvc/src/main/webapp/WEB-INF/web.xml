@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>Study_01Springmvc</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+ <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param> 
+  
+  
+  <!-- 
+    *.action，可以访问以.action结尾的地址，由DispatcherServlet进行解析。此方法最简单，不会导致静态资源（jpg,js,css）被拦截。
+	/，所有访问的地址都由DispatcherServlet进行解析，此方法可以实现REST风格的url，很多互联网类型的应用使用这种方式。但是此方法会导致静态文件（jpg,js,css）被拦截后不能正常显示，所以对静态文件的解析需要配置不让DispatcherServlet进行解析。
+	/*，这样配置是不对的，使用这种配置，最重要转发到一个jsp页面时，仍然会由DispatcherServlet解析jsp地址，不能根据jsp页面找到Handler，会报错。 -->
+    <servlet>
+        <servlet-name>dispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+        	 <param-name>contextConfigLocation</param-name>
+   			 <param-value>classpath:applicationContext.xml</param-value>
+        </init-param>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+     <servlet-mapping>
+	  	<servlet-name>dispatcher</servlet-name>
+	  	<url-pattern>/</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  	<servlet-name>dispatcher</servlet-name>
+	  	<url-pattern>*.action</url-pattern>
+	  </servlet-mapping>
+	  <servlet-mapping>
+	  	<servlet-name>dispatcher</servlet-name>
+	  	<url-pattern>*.do</url-pattern>
+	  </servlet-mapping>
+ 
+</web-app>

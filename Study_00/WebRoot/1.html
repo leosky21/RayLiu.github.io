@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>1.html</title>
+	
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+  </head>
+  
+  <body>
+    aaaaaaaaa<br/>
+    <ul>
+    一个完整的HTTP请求包括如下内容：
+    	<li>一个请求行。</li>
+    	<li>若干请求头。</li>
+    	<li>实体内容。</li>
+    	
+    	请求行中的GET称之为请求方式，请求方式有：<br/>
+
+			- POST、GET、HEAD、OPTIONS、DELETE、TRACE、PUT<br/>
+			- 常用的有： GET、 POST<br/>
+			- 用户如没有设置，默认情况下浏览器向服务器发送的都是get请求，例如在浏览器直接输地址访问，点超链接访问等都是get，用户如想把请求方式改为post，可通过更改表单的提交方式实现。<br/>
+    </ul>
+    <p><strong>GET方式的特点：在URL地址后附带的参数是有限制的，其数据容量通常不能超过1K。</strong></p>
+    <p>如请求方式为POST方式，则可以在请求的实体内容中向服务器发送数据，POST方式的特点：传送的数据量无限制。</p>
+    <p><strong>HTTP响应的细节——状态行</strong></p>
+    <p>状态行格式：HTTP版本号　状态码　原因叙述<CRLF>。例：HTTP/1.1 200 OK。 
+状态码用于表示服务器对请求的处理结果，它是一个三位的十进制数。响应状态码分为5类，如下所示： 
+    </p>
+    <img src="./images/HTTP响应状态码">
+    <p>
+    - 302——你是客户机，我是服务器，你请求我，我要你去找别人。要找哪个人，等一会我会给你回送一个location的头，location指定的是哪个地址，意味着要你去找谁。
+	- 307/304：和缓存相关，你是客户机，我是服务器，你请求我，意味着我要你去拿缓存里面的数据显示。
+	- 404——意味着请求的资源在web服务器里面没有，请求的地址可能写错了。
+	- 403——你开始访问服务器某个资源，传入用户名和密码，结果用户名没有权限，服务器有这个资源，但拒绝给你这个资源。 </p>
+  <ul>
+  	<p><strong>HTTP响应细节——常用响应头</strong></p>
+<li>location：这个头配合302状态码使用，用于告诉客户找谁。</li>
+<li>Server：服务器通过这个头，告诉浏览器服务器的类型。</li>
+<li>Content-Encoding：服务器通过这个头，告诉浏览器数据的压缩格式。</li>
+<li>Content-Length：服务器通过这个头，告诉浏览器回送数据的长度。</li>
+<li>Content-Language：服务器通过这个头，回送数据(即浏览器)的语言环境。</li>
+<li>Content-Type：服务器通过这个头，告诉浏览器回送数据的类型。</li>
+<li>Last-Modified：服务器通过这个头，告诉浏览器当前资源的缓存时间。</li>
+<li>Refresh：服务器通过这个头，告诉浏览器隔多长时间刷新一次。</li>
+<li>Content-Disposition：服务器通过这个头，告诉浏览器以下载方式打开数据。</li>
+<li>Transfer-Encoding：服务器通过这个头，告诉浏览器数据的传送格式。</li>
+<li>Set-Cookie：和Cookie相关的。以后会详讲。</li>
+<li>ETag：缓存相关的头。 <br/>服务器有很多web资源，每一个web资源根据其内容生成一个唯一的串(标识符)，内容不同，标识符也不同。当浏览器访问服务器资源时，那服务器会把此资源的标识符以ETag方式的形式回写给客户机，客户机下次来访问服务器时，会带着ETag头来，服务器收到这个标识符之后，它会检查一下资源的标识符和客户机带过来的标识符是不是一样，如果是一样，意味着此资源没有被改动，没有被改动，直接就让浏览器去拿缓存；如果客户机带过来的标识符和服务器资源的标识符不一样，那么此资源就做出改动了，因为内容一改动，标识符就会跟着改，这时，服务器给浏览器回送改动后的资源。 
+用ETag可以做到实时更新，其他头只能控制到秒一级的更新，无法做到实时性很高的系统。</li>
+<li>Expires：服务器通过这个头，告诉浏览器把回送的资源缓存多长时间，-1或0，则不缓存。</li>
+<li>Cache-Control: no-cache</li>
+<li>Pragma: no-cache <br/>服务器通过以上两个头，也是控制浏览器不要缓存数据。（实时性要求很高的数据不能缓存，如股票数据，对于一般的数据，都可缓存。） 
+如果控制市面上所有的浏览器都不要缓存数据，最好设置Expires、Cache-Control、Pragma这三个响应头。</li>
+<li>Connection：响应完之后，是保持连接，还是断开连接</li>
+<li>Date：当前响应时间值。</li>
+  </ul>
+  
+  <ul>
+  	<li><strong>设置Content-Encoding响应头，告诉浏览器数据的压缩格式</strong></li>
+  	<li>假设数据有1M，浏览器为了显示这个资源，要从服务器上下载1M的数据，才能打开整个页面，打开速度就慢，你如果一压缩，可能1M的数据只有300K，对浏览器而言，只需要接收300K的数据就可打开整个页面，所以压缩会提供整个页面的访问性能。</li>
+  	<li>为了省钱，因为大型的网站，比如新浪、搜狐这样的门户网站，电信对它们的收费是按照出口流量收费的，出去了多少数据，电信找它们收多少钱，为了省钱，数据在发出去的时候一定要压缩，不压缩就亏大发了。</li>
+  	<li>怎么实现数据的压缩？需要使用GZIPOutputStream流来压缩数据:: <strong>ServletDemo01</strong>></li>
+  </ul>
+  
+  <strong>HTTP的一个实用头字段——Range</strong>
+  <ul>
+  <strong>断电续传</strong>
+  	<li>Range：bytes=1000-2000 
+		传输范围从1000到2000字节。</li>
+		<li>Range：bytes=1000- 
+传输web资源中第1000个字节以后的所有内容。</li>
+		<li>Range：bytes=1000 
+传输最后1000个字节。</li>
+		<li>Accept-Ranges：这个字段说明web服务器是否支持Range，支持则返回Accept-Ranges: bytes；如果不支持，则返回Accept-Ranges: none。 </li>
+<li>Content-Range：指定了返回的web资源的字节范围。这个字段值的格式是——例，Content-Range: 1000-3000/5000。 
+<strong>注意：HTTP响应头字段不常用。</strong></li>
+  </ul>
+  </body>
+</html>

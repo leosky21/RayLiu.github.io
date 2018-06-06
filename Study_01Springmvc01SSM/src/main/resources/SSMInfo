@@ -1,0 +1,35 @@
+1. 	
+	- 表现层: Springmvc
+	- 业务层: service接口
+	- 持久层: mybatis
+	- 数据库: mysql
+	
+2. 
+	Spring将各层整合
+		- 通过Spring管理持久层的mapper(相当于dao)
+		- 通过Spring管理业务层service,service中可以调用mapper接口
+		- Spring 进行事务控制
+		
+		- 通过Spring管理表现层Handler,Handler可以调用service接口
+		- mapper,service,Handler都是Javabean
+		
+3. 整合思路
+	- Dao层
+		- SQLMapConfig.xml 
+		- applicationContext-dao.xml
+			+ 数据库连接池
+			+ SQLSessionFactory对象,需要Spring和mybatis整合包
+			+ 配置mapper文件扫描器
+	
+	- Service层
+		- applicationContext-service.xml文件中配置包扫描器
+				扫描带@Service注解的类
+		- applicationContext-trans.xml 文件中配置事务
+	
+	- 表现层
+		- 包扫描器,扫描带@controller注解的类
+		- 配置注解驱动
+		- 配置视图解析器
+		
+	- web.xml
+		配置前端控制器
